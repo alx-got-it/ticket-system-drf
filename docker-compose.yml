@@ -9,16 +9,16 @@ services:
             - 80:80
         volumes:
             - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
-            - static_volume:/app/backend/django_static
+            - static_volume:/app/cork/django_static
     server:
         restart: unless-stopped
         platform: linux/amd64
         build:
             context: .
-            dockerfile: ./docker/backend/Dockerfile
-        entrypoint: /app/docker/backend/server-entrypoint.sh
+            dockerfile: ./docker/cork/Dockerfile
+        entrypoint: /app/docker/cork/server-entrypoint.sh
         volumes:
-            - static_volume:/app/backend/django_static
+            - static_volume:/app/cork/django_static
         expose:
             - 8000
         environment:
@@ -39,10 +39,10 @@ services:
         platform: linux/amd64
         build:
             context: .
-            dockerfile: ./docker/backend/Dockerfile
-        entrypoint: /app/docker/backend/worker-entrypoint.sh
+            dockerfile: ./docker/cork/Dockerfile
+        entrypoint: /app/docker/cork/worker-entrypoint.sh
         volumes:
-            - static_volume:/app/backend/django_static
+            - static_volume:/app/cork/django_static
         environment:
             DEBUG: "True"
             CELERY_BROKER_URL: "redis://redis:6379/0"

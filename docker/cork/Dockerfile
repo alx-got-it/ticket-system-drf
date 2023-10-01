@@ -10,7 +10,7 @@ RUN pip install gunicorn
 ADD ./requirements.txt /app/
 RUN pip install -r requirements.txt
 
-ADD ./backend /app/backend
+ADD ./cork /app/cork
 ADD ./docker /app/docker
 
 RUN chmod +x /app/docker/backend/server-entrypoint.sh
