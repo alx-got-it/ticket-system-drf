@@ -32,11 +32,6 @@ if os.environ.get('ALLOWED_HOSTS') is not None:
     except Exception as e:
         print('Cant set ALLOWED_HOSTS, using default instead')
 
-# Calling a createsuperuser constants for using with docker-compose
-DJANGO_SUPERUSER_USERNAME = 'admin'
-DJANGO_SUPERUSER_PASSWORD = '1234'
-DJANGO_SUPERUSER_EMAIL = 'admin@admin.ru'
-
 # Application definition
 
 INSTALLED_APPS = [
