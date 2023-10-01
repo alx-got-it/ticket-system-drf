@@ -5,26 +5,11 @@ do
     echo "Entering the app/cork folder"
 done
 
+python manage.py makemigrations
 
-until python manage.py makemigrations
-do
-    echo "Making migrations"
-    sleep 2
-done
+python manage.py migrate
 
-
-until python manage.py migrate
-do
-    echo "Migrating"
-    sleep 2
-done
-
-
-untilpython manage.py collectstatic --noinput
-do
-    echo "Collecting static"
-    sleep 2
-done
+python manage.py collectstatic --noinput
 
 # python manage.py createsuperuser --noinput
 

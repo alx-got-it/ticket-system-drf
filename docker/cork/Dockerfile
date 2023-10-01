@@ -13,5 +13,5 @@ RUN pip install -r requirements.txt
 ADD ./cork /app/cork
 ADD ./docker /app/docker
 
-RUN chmod +x /app/docker/backend/server-entrypoint.sh
-RUN chmod +x /app/docker/backend/worker-entrypoint.sh
+RUN chmod +x /app/docker/cork/server-entrypoint.sh
+RUN chmod +x /app/docker/cork/worker-entrypoint.sh
