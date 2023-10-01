@@ -19,6 +19,7 @@ services:
         entrypoint: /app/docker/cork/server-entrypoint.sh
         volumes:
             - static_volume:/app/cork/django_static
+            - dev_volume:/app/cork
         expose:
             - 8000
         environment:
@@ -80,3 +81,4 @@ services:
 volumes:
     static_volume: {}
     postgres_data: {}
+    dev_volume: {}

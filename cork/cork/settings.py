@@ -19,7 +19,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET_KEY", "django-insecure-6hdy-)5o6k6it_6x%s#u0#guc3(au!=v%%qb674(upu6rrht7b")
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-6hdy-)5o6k6it_6x%s#u0#guc3(au!=v%%qb674(upu6rrht7b')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', True)
@@ -31,6 +31,11 @@ if os.environ.get('ALLOWED_HOSTS') is not None:
         ALLOWED_HOSTS += os.environ.get('ALLOWED_HOSTS').split(',')
     except Exception as e:
         print('Cant set ALLOWED_HOSTS, using default instead')
+
+# Calling a createsuperuser constants for using with docker-compose
+DJANGO_SUPERUSER_USERNAME = 'admin'
+DJANGO_SUPERUSER_PASSWORD = '1234'
+DJANGO_SUPERUSER_EMAIL = 'admin@admin.ru'
 
 # Application definition
 
@@ -78,25 +83,25 @@ WSGI_APPLICATION = 'cork.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DB_SQLITE = "sqlite"
-DB_POSTGRESQL = "postgresql"
+DB_SQLITE = 'sqlite'
+DB_POSTGRESQL = 'postgresql'
 
 DATABASES_ALL = {
     DB_SQLITE: {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     },
     DB_POSTGRESQL: {
-        "ENGINE": "django.db.backends.postgresql",
-        "HOST": os.environ.get("POSTGRES_HOST", "localhost"),
-        "NAME": os.environ.get("POSTGRES_NAME", "postgres"),
-        "USER": os.environ.get("POSTGRES_USER", "postgres"),
-        "PASSWORD": os.environ.get("POSTGRES_PASSWORD", "postgres"),
-        "PORT": int(os.environ.get("POSTGRES_PORT", "5432")),
+        'ENGINE': 'django.db.backends.postgresql',
+        'HOST': os.environ.get('POSTGRES_HOST', 'localhost'),
+        'NAME': os.environ.get('POSTGRES_NAME', 'postgres'),
+        'USER': os.environ.get('POSTGRES_USER', 'postgres'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'postgres'),
+        'PORT': int(os.environ.get('POSTGRES_PORT', '5432')),
     },
 }
 
-DATABASES = {"default": DATABASES_ALL[os.environ.get("DJANGO_DB", DB_POSTGRESQL)]}
+DATABASES = {'default': DATABASES_ALL[os.environ.get('DJANGO_DB', DB_POSTGRESQL)]}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -130,8 +135,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = "/django_static/"
-STATIC_ROOT = BASE_DIR / "django_static"
+STATIC_URL = '/django_static/'
+STATIC_ROOT = BASE_DIR / 'django_static'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -139,5 +144,5 @@ STATIC_ROOT = BASE_DIR / "django_static"
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # celery broker and result
-CELERY_BROKER_URL = os.environ.get("BROKER_URL", "redis://localhost:6379/0")
-CELERY_RESULT_BACKEND = os.environ.get("RESULT_BACKEND", "redis://localhost:6379/0")
+CELERY_BROKER_URL = os.environ.get('BROKER_URL', 'redis://localhost:6379/0')
+CELERY_RESULT_BACKEND = os.environ.get('RESULT_BACKEND', 'redis://localhost:6379/0')
