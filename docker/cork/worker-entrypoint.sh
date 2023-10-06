@@ -6,4 +6,4 @@ do
 done
 
 # run a worker :)
-celery -A cork worker --loglevel=info --concurrency 2 -E
+celery -A cork worker --loglevel=info --concurrency 1 -E

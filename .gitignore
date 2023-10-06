@@ -1,4 +1,9 @@
 /.idea
+/.vscode
 /venv
+/cork/__pycache__
+/cork/app_core/__pycache__
+/cork/app_core/migrations
+/cork/cork/__pycache__
 poetry.lock
 pyproject.toml

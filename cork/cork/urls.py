@@ -16,14 +16,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.contrib.staticfiles.storage import staticfiles_storage
-from django.urls import path
+from django.urls import path, include
 from django.views.generic import RedirectView
 
+# from app_core.urls import app_core_urlpatterns
 from app_core.urls import app_core_urlpatterns
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/auth', include('rest_framework.urls'))
 ]
 
 urlpatterns += app_core_urlpatterns
