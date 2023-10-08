@@ -4,7 +4,6 @@ services:
     nginx:
         restart: always
         image: nginx:1.25.2-alpine
-        platform: linux/amd64
         ports:
             - 80:80
         volumes:
@@ -12,7 +11,6 @@ services:
             - static_volume:/app/cork/django_static
     server:
         restart: unless-stopped
-        platform: linux/amd64
         build:
             context: .
             dockerfile: ./docker/cork/Dockerfile
@@ -23,9 +21,9 @@ services:
             - 8000
         environment:
             DEBUG: "True"
+            REDIS_SERVER: "redis://redis:6379/0"
             CELERY_BROKER_URL: "redis://redis:6379/0"
             CELERY_RESULT_BACKEND: "redis://redis:6379/0"
-            DJANGO_DB: postgresql
             POSTGRES_HOST: db
             POSTGRES_NAME: postgres
             POSTGRES_USER: postgres
@@ -36,7 +34,6 @@ services:
             - redis
     worker:
         restart: unless-stopped
-        platform: linux/amd64
         build:
             context: .
             dockerfile: ./docker/cork/Dockerfile
@@ -47,7 +44,6 @@ services:
             DEBUG: "True"
             CELERY_BROKER_URL: "redis://redis:6379/0"
             CELERY_RESULT_BACKEND: "redis://redis:6379/0"
-            DJANGO_DB: postgresql
             POSTGRES_HOST: db
             POSTGRES_NAME: postgres
             POSTGRES_USER: postgres
@@ -60,12 +56,10 @@ services:
     redis:
         restart: unless-stopped
         image: redis:7.2.1-alpine
-        platform: linux/amd64
         expose:
             - 6379
     db:
         image: postgres:16.0-alpine
-        platform: linux/amd64
         restart: unless-stopped
         volumes:
             - postgres_data:/var/lib/postgresql/data/

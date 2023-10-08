@@ -11,6 +11,7 @@ colorama==0.4.6
 django-filter==23.3
 django==4.2.5
 djangorestframework==3.14.0
+hiredis==2.2.3
 kombu==5.3.2
 markdown==3.4.4
 prompt-toolkit==3.0.39

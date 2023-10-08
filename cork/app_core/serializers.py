@@ -1,69 +1,41 @@
+from django.contrib.auth.models import User
 from rest_framework import serializers
 
 from app_core.models import Ticket, Location, Regularity, ToValidate
 
 
 class TicketSerializer(serializers.ModelSerializer):
-    """ Список объявлений """
-
-    location = serializers.SlugRelatedField('name', read_only=True)
-    regularity = serializers.SlugRelatedField('name', read_only=True)
-    owner = serializers.ReadOnlyField(source='owner.username')
+    location = serializers.ReadOnlyField(source="location.name")
+    regularity = serializers.ReadOnlyField(source="regularity.name")
+    owner = serializers.ReadOnlyField(source="owner.username")
 
     class Meta:
         model = Ticket
-        read_only_fields = ('manager', 'updated')
-        exclude = ('validated', 'rejected')
-        # depth = 1
-
-
-class TicketListSerializer(serializers.ModelSerializer):
-    """ Список объявлений """
-
-    location = serializers.SlugRelatedField('name', read_only=True)
-    regularity = serializers.SlugRelatedField('name', read_only=True)
-
-    class Meta:
-        model = Ticket
-        read_only_fields = ('manager', 'updated')
-        exclude = ('validated', 'rejected')
-        # depth = 1
-
-
-class TicketDetailSerializer(serializers.ModelSerializer):
-    """ Объявление """
-
-    location = serializers.SlugRelatedField('name', read_only=True)
-    regularity = serializers.SlugRelatedField('name', read_only=True)
-
-    class Meta:
-        model = Ticket
-        read_only_fields = ('manager', 'updated')
-        exclude = ('validated', 'rejected')
-        # depth = 1
-
-
-class TicketByLocationSerializer(serializers.ModelSerializer):
-    """ Список объявлений по локации """
-
-    location = serializers.SlugRelatedField('name', read_only=True)
-    regularity = serializers.SlugRelatedField('name', read_only=True)
-
-    class Meta:
-        model = Ticket
-        read_only_fields = ('manager', 'updated')
-        exclude = ('validated', 'rejected')
+        read_only_fields = ("updated", "owner")
+        exclude = ("validated", "rejected")
+        depth = 1
 
 
 class TicketCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ticket
-        fields = '__all__'
+        fields = "__all__"
+
+
+class TicketByLocationSerializer(TicketSerializer):
+    location_id = serializers.ReadOnlyField(source="location.id")
 
 
 class LocationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Location
-        read_only_fields = ('name', 'address', 'slug')
-        fields = ('name', 'address', 'slug')
+        fields = "__all__"
+
+
+class UserSerializer(serializers.ModelSerializer):
+    tickets = TicketSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = User
+        fields = ["id", "username", "first_name", "email", "tickets"]
         depth = 1

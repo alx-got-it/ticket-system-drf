@@ -5,22 +5,22 @@ from django.urls import reverse, reverse_lazy
 
 class Location(models.Model):
     class Meta:
-        verbose_name = 'Локация'
-        verbose_name_plural = 'Локации'
+        verbose_name = "Локация"
+        verbose_name_plural = "Локации"
 
     name = models.CharField(
-        verbose_name='Название локации',
+        verbose_name="Название локации",
         max_length=64,
     )
 
     address = models.CharField(
-        verbose_name='Фактический адрес локации',
+        verbose_name="Фактический адрес локации",
         max_length=300,
         blank=True,
     )
 
     slug = models.SlugField(
-        verbose_name='Строка в адресе',
+        verbose_name="Строка в адресе",
         null=False,
         unique=True,
     )
@@ -28,18 +28,14 @@ class Location(models.Model):
     def __str__(self):
         return self.name
 
-    def get_absolute_url(self):
-        # return f"/{self.slug}"
-        return reverse('mainboard:tickets_by_location', args=[self.slug])
-
 
 class Regularity(models.Model):
     class Meta:
-        verbose_name = 'Регулярность'
-        verbose_name_plural = 'Регулярность'
+        verbose_name = "Регулярность"
+        verbose_name_plural = "Регулярность"
 
     name = models.CharField(
-        verbose_name='Название',
+        verbose_name="Название",
         max_length=32,
     )
 
@@ -49,61 +45,61 @@ class Regularity(models.Model):
 
 class Ticket(models.Model):
     class Meta:
-        verbose_name = 'Объявление'
-        verbose_name_plural = 'Объявления'
+        verbose_name = "Объявление"
+        verbose_name_plural = "Объявления"
 
     header = models.CharField(
-        verbose_name='Заголовок',
+        verbose_name="Заголовок",
         max_length=128,
     )
 
     text = models.TextField(
-        verbose_name='Текст',
+        verbose_name="Текст",
     )
 
     location = models.ForeignKey(
         Location,
-        related_name='tickets',
-        verbose_name='Место',
+        related_name="tickets_location",
+        verbose_name="Место",
         on_delete=models.PROTECT,
     )
 
     regularity = models.ForeignKey(
         Regularity,
-        related_name='regularity',
-        verbose_name='Регулярность',
+        related_name="tickets_regularity",
+        verbose_name="Регулярность",
         on_delete=models.PROTECT,
     )
 
     manager = models.CharField(
-        verbose_name='Ответственный',
+        verbose_name="Ответственный",
         max_length=64,
     )
 
     contact = models.CharField(
-        verbose_name='Контакт в telegram',
+        verbose_name="Контакт в telegram",
         max_length=64,
     )
 
     updated = models.DateField(
-        verbose_name='Опубликовано',
+        verbose_name="Опубликовано",
         auto_now=True,
     )
 
     validated = models.BooleanField(
-        verbose_name='Проверено',
+        verbose_name="Проверено",
         default=False,
     )
 
     rejected = models.BooleanField(
-        verbose_name='Отклонено',
+        verbose_name="Отклонено",
         default=False,
     )
 
     owner = models.ForeignKey(
-        'auth.User',
-        verbose_name='Владелец',
-        related_name='tickets',
+        "auth.User",
+        verbose_name="Владелец",
+        related_name="tickets_owner",
         on_delete=models.PROTECT,
         default=1,
     )
@@ -111,21 +107,18 @@ class Ticket(models.Model):
     def __str__(self):
         return self.header
 
-    def get_absolute_url(self):
-        return f"/{self.pk}"
-
 
 class ToValidate(models.Model):
     class Meta:
-        verbose_name = 'На валидации'
-        verbose_name_plural = 'На валидации'
+        verbose_name = "На валидации"
+        verbose_name_plural = "На валидации"
 
     id = models.ManyToManyField(
         Ticket,
-        verbose_name='Объявления на проверке',
+        verbose_name="Объявления на проверке",
     )
 
     updated = models.DateTimeField(
         auto_now=True,
-        verbose_name='Время последнего обновления',
+        verbose_name="Время последнего обновления",
     )

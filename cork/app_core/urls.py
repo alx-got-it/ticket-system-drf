@@ -1,27 +1,34 @@
 from django.urls import re_path, path, include
+from django.views.decorators.cache import cache_page
 from rest_framework import routers
 from rest_framework.routers import DefaultRouter
 
-# from app_core.views import TicketViewSet, LocationViewSet, ByLocationViewSet
-# from app_core.views import TicketListView, TicketDetailView, TicketByLocationView, TicketCreateView
-from app_core.views import TicketViewSet
-
-router = DefaultRouter()
-router.register(r'ticket', TicketViewSet, basename='ticket')
-# router.register(r'location', LocationViewSet, basename='location')
-# router.register(r'tickets_by_location/(?P<location>\w+)/$', ByLocationViewSet, basename='by_location')
+from app_core.views import (TicketListView, TicketDetailView, TicketByLocationView, TicketCreateView,
+                            LocationListView, LocationDetailView, UserListView, UserDetailView,
+                            UserMeView, TicketMyView)
 
 urlpatterns = [
-    # path('ticket/list/', TicketListView.as_view()),
-    # path('ticket/detail/<int:pk>', TicketDetailView.as_view()),
-    # path('ticket/create/', TicketCreateView.as_view()),
-    # path('ticket/by_location/<str:slug>', TicketByLocationView.as_view()),
-
-    # path('', include(router.urls)),
-    # path(r'ticket/by_location/(?P<location>\w+)/$', TicketsByLocationView, name='tickets_by_location'),
+    path("ticket/list/", cache_page(60 * 60)(TicketListView.as_view()), name="ticket-list"),
+    path("ticket/detail/<int:pk>", cache_page(60 * 60)(TicketDetailView.as_view()),
+         name="ticket-detail"),
+    path("ticket/create/", TicketCreateView.as_view(), name="ticket-create"),
+    path("ticket/my/", cache_page(60 * 60)(TicketMyView.as_view()), name="ticket-my"),
+    path(
+        "ticket/by_location/<slug:slug>",
+        cache_page(60 * 60)(TicketByLocationView.as_view()),
+        name="ticket-by-location",
+    ),
+    path("location/list/", cache_page(60 * 60)(LocationListView.as_view()),
+         name="location-list"),
+    path(
+        "location/detail/<slug:slug>",
+        cache_page(60 * 60)(LocationDetailView.as_view()),
+        name="location-detail",
+    ),
+    path("user/list/", cache_page(60 * 60)(UserListView.as_view()), name="user-list"),
+    path("user/me/", cache_page(60 * 60)(UserMeView.as_view()), name="user-me"),
+    path("user/detail/<int:pk>", cache_page(60 * 60)(UserDetailView.as_view()),
+         name="user-detail"),
 ]
 
-# app_core_urlpatterns = router.urls
-
-urlpatterns += router.urls
 app_core_urlpatterns = urlpatterns
